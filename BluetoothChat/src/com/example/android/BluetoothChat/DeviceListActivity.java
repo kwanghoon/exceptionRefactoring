@@ -19,6 +19,7 @@ package com.example.android.BluetoothChat;
 import java.util.Set;
 
 import android.app.Activity;
+import android.app.ExceptionActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -28,14 +29,18 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ExceptionView;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.ExceptionView.ExceptionOnClickListener;
 import android.widget.AdapterView;
+import android.widget.ExceptionAdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ExceptionOnItemClickListener;
 
 /**
  * This Activity appears as a dialog. It lists any paired devices and
@@ -43,7 +48,7 @@ import android.widget.AdapterView.OnItemClickListener;
  * by the user, the MAC address of the device is sent back to the parent
  * Activity in the result Intent.
  */
-public class DeviceListActivity extends Activity {
+public class DeviceListActivity extends ExceptionActivity {
     // Debugging
     private static final String TAG = "DeviceListActivity";
     private static final boolean D = true;
@@ -57,8 +62,8 @@ public class DeviceListActivity extends Activity {
     private ArrayAdapter<String> mNewDevicesArrayAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void OnCreate(Bundle savedInstanceState) throws Throwable {
+        super.OnCreate(savedInstanceState);
 
         // Setup the window
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -69,8 +74,8 @@ public class DeviceListActivity extends Activity {
 
         // Initialize the button to perform device discovery
         Button scanButton = (Button) findViewById(R.id.button_scan);
-        scanButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
+        scanButton.setOnClickListener(new ExceptionOnClickListener(this) {
+            public void OnClick(View v)  {
                 doDiscovery();
                 v.setVisibility(View.GONE);
             }
@@ -118,8 +123,8 @@ public class DeviceListActivity extends Activity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void OnDestroy() throws Throwable {
+        super.OnDestroy();
 
         // Make sure we're not doing discovery anymore
         if (mBtAdapter != null) {
@@ -153,8 +158,8 @@ public class DeviceListActivity extends Activity {
     }
 
     // The on-click listener for all devices in the ListViews
-    private OnItemClickListener mDeviceClickListener = new OnItemClickListener() {
-        public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
+    private ExceptionOnItemClickListener mDeviceClickListener = new ExceptionOnItemClickListener(this) {
+        public void OnItemClick(AdapterView<?> av, View v, int arg2, long arg3) throws Throwable {
             // Cancel discovery because it's costly and we're about to connect
             mBtAdapter.cancelDiscovery();
 

@@ -42,8 +42,8 @@ public class NotesLiveFolder extends ExceptionActivity {
      * Instead, it sets up an Intent and returns it to its caller (the HOME activity).
      */
     @Override
-    protected void OnCreate(Bundle savedInstanceState) {
-        //super.onCreate(savedInstanceState);
+    protected void OnCreate(Bundle savedInstanceState) throws Throwable {
+        super.OnCreate(savedInstanceState);
 
         /*
          * Gets the incoming Intent and its action. If the incoming Intent was

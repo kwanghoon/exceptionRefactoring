@@ -66,8 +66,6 @@ public class ExceptionActivity extends Activity {
 	/// Lifecycle of Activity
 	@Override
 	final protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
 		theIntent = getIntent();
 		
 		try {
@@ -78,12 +76,11 @@ public class ExceptionActivity extends Activity {
 	}
 	
 	protected void OnCreate(Bundle savedInstanceState)  throws Throwable {
+		super.onCreate(savedInstanceState);
 	}
 	
 	@Override
 	final protected void onStart() {
-		super.onStart();
-		
 		try {
 			this.OnStart();
 		} catch(Throwable exn) {
@@ -92,12 +89,11 @@ public class ExceptionActivity extends Activity {
 	}
 	
 	protected void OnStart() throws Throwable {
+		super.onStart();
 	}
 	
 	@Override
 	final protected void onResume() {
-		super.onResume();
-		
 		try {
 			this.OnResume();
 		} catch(Throwable exn) {
@@ -106,12 +102,11 @@ public class ExceptionActivity extends Activity {
 	}
 	
 	protected void OnResume() throws Throwable {
+		super.onResume();
 	}
 	
 	@Override
 	final protected void onPause() {
-		super.onPause();
-		
 		try {
 			this.OnPause();
 		} catch(Throwable exn) {
@@ -120,12 +115,11 @@ public class ExceptionActivity extends Activity {
 	}
 	
 	protected void OnPause() throws Throwable {
+		super.onPause();
 	}	
 	
 	@Override
 	final protected void onStop() {
-		super.onStop();
-		
 		try {
 			this.OnStop();
 		} catch(Throwable exn) {
@@ -134,12 +128,11 @@ public class ExceptionActivity extends Activity {
 	}
 	
 	protected void OnStop() throws Throwable {
+		super.onStop();
 	}
 	
 	@Override
 	final protected void onDestroy() {
-		super.onDestroy();
-		
 		try {
 			this.OnDestroy();
 		} catch(Throwable exn) {
@@ -148,6 +141,7 @@ public class ExceptionActivity extends Activity {
 	}
 	
 	protected void OnDestroy() throws Throwable {
+		super.onDestroy();
 	}
 	
 	@Override

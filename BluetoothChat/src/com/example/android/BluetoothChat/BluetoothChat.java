@@ -91,8 +91,8 @@ public class BluetoothChat extends ExceptionActivity {
 
 
     @Override
-    public void OnCreate(Bundle savedInstanceState) {
-        //super.onCreate(savedInstanceState);
+    public void OnCreate(Bundle savedInstanceState) throws Throwable {
+        super.OnCreate(savedInstanceState);
         if(D) Log.e(TAG, "+++ ON CREATE +++");
 
         // Set up the window layout
@@ -110,8 +110,8 @@ public class BluetoothChat extends ExceptionActivity {
     }
 
     @Override
-    public void OnStart() {
-        //super.onStart();
+    public void OnStart() throws Throwable {
+        super.OnStart();
         if(D) Log.e(TAG, "++ ON START ++");
 
         // If BT is not on, request that it be enabled.
@@ -126,8 +126,8 @@ public class BluetoothChat extends ExceptionActivity {
     }
 
     @Override
-    public synchronized void OnResume() {
-        //super.onResume();
+    public synchronized void OnResume() throws Throwable {
+        super.OnResume();
         if(D) Log.e(TAG, "+ ON RESUME +");
 
         // Performing this check in onResume() covers the case in which BT was
@@ -173,20 +173,20 @@ public class BluetoothChat extends ExceptionActivity {
     }
 
     @Override
-    public synchronized void OnPause() {
-        //super.onPause();
+    public synchronized void OnPause() throws Throwable {
+        super.OnPause();
         if(D) Log.e(TAG, "- ON PAUSE -");
     }
 
     @Override
-    public void OnStop() {
-        //super.onStop();
+    public void OnStop() throws Throwable{
+        super.OnStop();
         if(D) Log.e(TAG, "-- ON STOP --");
     }
 
     @Override
-    public void OnDestroy() {
-        //super.onDestroy();
+    public void OnDestroy() throws Throwable {
+        super.OnDestroy();
         // Stop the Bluetooth chat services
         if (mChatService != null) mChatService.stop();
         if(D) Log.e(TAG, "--- ON DESTROY ---");

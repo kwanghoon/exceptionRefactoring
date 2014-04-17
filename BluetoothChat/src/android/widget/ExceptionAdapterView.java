@@ -20,16 +20,15 @@ public abstract class ExceptionAdapterView extends AdapterView {
 		context = context;
 	}
 	
+	// K. Choi: Looking useless!
 	public class ExceptionOnItemClickListener implements AdapterView.OnItemClickListener {
-
 		@Override
 		public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
 			try {
 				this.OnItemClick(av, v, arg2, arg3);
 			} catch(Throwable exn) {
-				// Issue: ExceptionTextView.this.context instanceof ExceptionActivity is always true! 
-				ExceptionActivity ea = ExceptionAdapterView.this.context;
-				ea.Throw( exn ); // Issue: one can throw exn because context *is* ExceptionActivity!
+				// Issue: ExceptionTextView.this.context instanceof ExceptionActivity is always true!
+				context.Throw( exn ); // Issue: one can throw exn because context *is* ExceptionActivity!
 			}
 		}
 		

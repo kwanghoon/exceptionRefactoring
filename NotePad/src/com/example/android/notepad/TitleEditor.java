@@ -64,8 +64,8 @@ public class TitleEditor extends ExceptionActivity {
      * Intent, it determines what kind of editing is desired, and then does it.
      */
     @Override
-    public void OnCreate(Bundle savedInstanceState) {
-        //super.onCreate(savedInstanceState);
+    public void OnCreate(Bundle savedInstanceState) throws Throwable {
+        super.OnCreate(savedInstanceState);
 
         // Set the View for this Activity object's UI.
         setContentView(R.layout.title_editor);
@@ -102,8 +102,8 @@ public class TitleEditor extends ExceptionActivity {
      * Displays the current title for the selected note.
      */
     @Override
-    protected void OnResume() {
-        // super.onResume();
+    protected void OnResume() throws Throwable {
+        super.OnResume();
 
         // Verifies that the query made in onCreate() actually worked. If it worked, then the
         // Cursor object is not null. If it is *empty*, then mCursor.getCount() == 0.
@@ -130,8 +130,8 @@ public class TitleEditor extends ExceptionActivity {
      * Updates the note with the text currently in the text box.
      */
     @Override
-    protected void OnPause() {
-        // super.onPause();
+    protected void OnPause() throws Throwable {
+        super.OnPause();
 
         // Verifies that the query made in onCreate() actually worked. If it worked, then the
         // Cursor object is not null. If it is *empty*, then mCursor.getCount() == 0.

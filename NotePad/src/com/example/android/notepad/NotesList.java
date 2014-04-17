@@ -70,8 +70,8 @@ public class NotesList extends ExceptionListActivity {
      * onCreate is called when Android starts this Activity from scratch.
      */
     @Override
-    protected void OnCreate(Bundle savedInstanceState) {
-        //super.onCreate(savedInstanceState);
+    protected void OnCreate(Bundle savedInstanceState) throws Throwable {
+        super.OnCreate(savedInstanceState);
 
         // The user does not need to hold down the key to use menu shortcuts.
         setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
@@ -170,8 +170,8 @@ public class NotesList extends ExceptionListActivity {
     }
 
     @Override
-    public boolean OnPrepareOptionsMenu(Menu menu) {
-        // super.onPrepareOptionsMenu(menu);
+    public boolean OnPrepareOptionsMenu(Menu menu) throws Throwable {
+    	super.OnPrepareOptionsMenu(menu);
 
         // The paste menu item is enabled if there is data on the clipboard.
         ClipboardManager clipboard = (ClipboardManager)

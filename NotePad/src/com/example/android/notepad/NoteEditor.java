@@ -138,8 +138,8 @@ public class NoteEditor extends ExceptionActivity {
      * Intent, it determines what kind of editing is desired, and then does it.
      */
     @Override
-    protected void OnCreate(Bundle savedInstanceState) {
-        //super.onCreate(savedInstanceState);
+    protected void OnCreate(Bundle savedInstanceState) throws Throwable {
+        super.OnCreate(savedInstanceState);
 
         /*
          * Creates an Intent to use when the Activity object's result is sent back to the
@@ -248,8 +248,8 @@ public class NoteEditor extends ExceptionActivity {
      * backup.
      */
     @Override
-    protected void OnResume() {
-        //super.onResume();
+    protected void OnResume() throws Throwable {
+    	super.OnResume();
 
         /*
          * mCursor is initialized, since onCreate() always precedes onResume for any running
@@ -335,8 +335,8 @@ public class NoteEditor extends ExceptionActivity {
      * writes the user's work to the provider.
      */
     @Override
-    protected void OnPause() {
-        //super.onPause();
+    protected void OnPause() throws Throwable {
+        super.OnPause();
 
         /*
          * Tests to see that the query operation didn't fail (see onCreate()). The Cursor object
