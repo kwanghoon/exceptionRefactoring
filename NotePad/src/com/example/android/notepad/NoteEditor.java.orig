@@ -103,7 +103,7 @@ public class NoteEditor extends ExceptionActivity {
          * @param canvas The canvas on which the background is drawn.
          */
         @Override
-        protected void OnDraw(Canvas canvas) throws Throwable {
+        protected void OnDraw(Canvas canvas) {
 
             // Gets the number of lines of text in the View.
             int count = getLineCount();
@@ -129,7 +129,7 @@ public class NoteEditor extends ExceptionActivity {
             }
 
             // Finishes up by calling the parent method
-            super.OnDraw(canvas); 
+            //super.onDraw(canvas); // Issue: A mismatch in the convention.
         }
     }
 

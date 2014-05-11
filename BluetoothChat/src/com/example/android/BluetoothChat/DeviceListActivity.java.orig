@@ -24,7 +24,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.ExceptionBroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -180,9 +179,9 @@ public class DeviceListActivity extends ExceptionActivity {
 
     // The BroadcastReceiver that listens for discovered devices and
     // changes the title when discovery is finished
-    private final BroadcastReceiver mReceiver = new ExceptionBroadcastReceiver(this) {
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
-        public void OnReceive(Context context, Intent intent) throws Throwable {
+        public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
             // When discovery finds a device
