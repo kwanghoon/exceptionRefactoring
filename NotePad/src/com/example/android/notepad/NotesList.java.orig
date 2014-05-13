@@ -18,6 +18,7 @@ package com.example.android.notepad;
 
 import com.example.android.notepad.NotePad;
 
+import android.app.AlertDialog;
 import android.app.ExceptionListActivity;
 import android.app.ListActivity;
 import android.content.ClipboardManager;
@@ -25,6 +26,7 @@ import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -270,7 +272,7 @@ public class NotesList extends ExceptionListActivity {
            * has to have action ACTION_INSERT. No category is set, so DEFAULT is assumed.
            * In effect, this starts the NoteEditor Activity in NotePad.
            */
-           startActivity(new Intent(Intent.ACTION_INSERT, getIntent().getData()));
+          startActivity(new Intent(Intent.ACTION_INSERT, getIntent().getData()));
            return true;
         case R.id.menu_paste:
           /*
@@ -465,4 +467,17 @@ public class NotesList extends ExceptionListActivity {
             startActivity(new Intent(Intent.ACTION_EDIT, uri));
         }
     }
+    
+    @Override
+	protected void Catch(Throwable exn, int requestCode) throws Throwable {
+		// 사용자가 지정한 예외 처리 코드: 다이얼로그를 띄움	
+    	Log.i("NotePad", exn.toString() + " is raised...");
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(exn.toString() + " is raised...")
+			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+					}
+			});
+		builder.create().show();
+	}
 }

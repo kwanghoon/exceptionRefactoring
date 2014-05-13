@@ -2,6 +2,7 @@ package android.app;
 
 import java.io.Serializable;
 
+import android.app.ExceptionListActivity.UncaughtException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,29 +11,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.widget.ListView;
 
-public class ExceptionListActivity extends ListActivity { // Issue: Many duplicate definitions from ExceptionActivity due to the unsupport of multiple inheritance in Java
-
-	// ListActivity Members ////////////////////////////////////////////
-	@Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-		try {
-			this.OnListItemClick(l, v, position, id);
-		} catch(Throwable exn) {
-			Throw(exn);
-		}
-	}
-	
-	protected void OnListItemClick(ListView l, View v, int position, long id) throws Throwable {
-	}
-
-	// Activity Members ////////////////////////////////////////////////
+public class ExceptionActivity extends Activity {
 	public final static String exception = "exception";
 	public final static int RESULT_EXCEPTION = 99999;
 	
 	private Intent theIntent;
-	private Catch catcher;
 	
 	public class UncaughtException extends RuntimeException {
 		/**
@@ -53,31 +37,15 @@ public class ExceptionListActivity extends ListActivity { // Issue: Many duplica
 	}
 	
 	///
-	final public void StartActivityForResult(Intent intent, int requestCode) {
+	final public void startActivityForResult(Intent intent, int requestCode) {
 		intent.putExtra(exception, (Serializable)null);
-		this.catcher = null;
 				
 		super.startActivityForResult(intent, requestCode);
 	}
 	
-	final public void StartActivity(Intent intent) {
+	final public void startActivity(Intent intent) {
 		intent.putExtra(exception, (Serializable)null);
-		this.catcher = null;
-		
-		super.startActivityForResult(intent, 0); // 0 is a dummy request code.
-	}
-	
-	final public void Try_StartActivityForResult(Intent intent, int requestCode, Catch catcher) {
-		intent.putExtra(exception, (Serializable)null);
-		this.catcher = catcher;
 				
-		super.startActivityForResult(intent, requestCode);
-	}
-	
-	final public void Try_StartActivity(Intent intent, Catch catcher) {
-		intent.putExtra(exception, (Serializable)null);
-		this.catcher = catcher;
-		
 		super.startActivityForResult(intent, 0); // 0 is a dummy request code.
 	}
 	
@@ -110,7 +78,7 @@ public class ExceptionListActivity extends ListActivity { // Issue: Many duplica
     		try {
     			this.Catch(exn, requestCode);
     		} catch(Throwable unhandled_exn) {
-//    			this.sendToTheCallerActivity(unhandled_exn);
+    			//this.sendToTheCallerActivity(unhandled_exn);
     			
     			// 시작 액티비티가 아니면 (호출 액티비티가 있다면) 예외를 전파
     			if ( theIntent.hasExtra(exception) ) {
@@ -137,13 +105,11 @@ public class ExceptionListActivity extends ListActivity { // Issue: Many duplica
 	}
 	
 	protected void OnActivityResult(int requestCode, int resultCode, Intent data) throws Throwable {
-	}	
+	}
 	
 	/// Lifecycle of Activity
 	@Override
 	final protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
 		theIntent = getIntent();
 		
 		try {
@@ -154,12 +120,11 @@ public class ExceptionListActivity extends ListActivity { // Issue: Many duplica
 	}
 	
 	protected void OnCreate(Bundle savedInstanceState)  throws Throwable {
+		super.onCreate(savedInstanceState);
 	}
 	
 	@Override
 	final protected void onStart() {
-		super.onStart();
-		
 		try {
 			this.OnStart();
 		} catch(Throwable exn) {
@@ -168,12 +133,11 @@ public class ExceptionListActivity extends ListActivity { // Issue: Many duplica
 	}
 	
 	protected void OnStart() throws Throwable {
+		super.onStart();
 	}
 	
 	@Override
 	final protected void onResume() {
-		super.onResume();
-		
 		try {
 			this.OnResume();
 		} catch(Throwable exn) {
@@ -182,12 +146,11 @@ public class ExceptionListActivity extends ListActivity { // Issue: Many duplica
 	}
 	
 	protected void OnResume() throws Throwable {
+		super.onResume();
 	}
 	
 	@Override
 	final protected void onPause() {
-		super.onPause();
-		
 		try {
 			this.OnPause();
 		} catch(Throwable exn) {
@@ -196,12 +159,11 @@ public class ExceptionListActivity extends ListActivity { // Issue: Many duplica
 	}
 	
 	protected void OnPause() throws Throwable {
+		super.onPause();
 	}	
 	
 	@Override
 	final protected void onStop() {
-		super.onStop();
-		
 		try {
 			this.OnStop();
 		} catch(Throwable exn) {
@@ -210,12 +172,11 @@ public class ExceptionListActivity extends ListActivity { // Issue: Many duplica
 	}
 	
 	protected void OnStop() throws Throwable {
+		super.onStop();
 	}
 	
 	@Override
 	final protected void onDestroy() {
-		super.onDestroy();
-		
 		try {
 			this.OnDestroy();
 		} catch(Throwable exn) {
@@ -224,6 +185,7 @@ public class ExceptionListActivity extends ListActivity { // Issue: Many duplica
 	}
 	
 	protected void OnDestroy() throws Throwable {
+		super.onDestroy();
 	}
 	
 	@Override
@@ -306,5 +268,17 @@ public class ExceptionListActivity extends ListActivity { // Issue: Many duplica
 	 public boolean OnContextItemSelected(MenuItem item)  throws Throwable  {
 		 return super.onContextItemSelected(item);
 	 }
+	
+	/// Issue: XML로 지정할 경우 onClick의 이름이 달라질 수 있음! 
+//	public void onClick(View v) {
+//		try {
+//			this.OnClick(v);
+//		} catch(Throwable exn) {
+//			Throw( exn );
+//		}
+//	}
+//	
+//	public void OnClick(View v) throws Throwable {
+//	}
 
 }

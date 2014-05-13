@@ -20,7 +20,6 @@ import com.example.android.notepad.NotePad;
 
 import android.app.AlertDialog;
 import android.app.ExceptionListActivity;
-import android.app.ListActivity;
 import android.content.ClipboardManager;
 import android.content.ClipData;
 import android.content.ComponentName;
@@ -272,7 +271,7 @@ public class NotesList extends ExceptionListActivity {
            * has to have action ACTION_INSERT. No category is set, so DEFAULT is assumed.
            * In effect, this starts the NoteEditor Activity in NotePad.
            */
-          startActivity(new Intent(Intent.ACTION_INSERT, getIntent().getData()));
+          StartActivity(new Intent(Intent.ACTION_INSERT, getIntent().getData()));
            return true;
         case R.id.menu_paste:
           /*
@@ -280,7 +279,7 @@ public class NotesList extends ExceptionListActivity {
            * has to have action ACTION_PASTE. No category is set, so DEFAULT is assumed.
            * In effect, this starts the NoteEditor Activity in NotePad.
            */
-          startActivity(new Intent(Intent.ACTION_PASTE, getIntent().getData()));
+          StartActivity(new Intent(Intent.ACTION_PASTE, getIntent().getData()));
           return true;
         default:
         	return super.OnOptionsItemSelected(item); // Issue: handling return values
@@ -397,7 +396,7 @@ public class NotesList extends ExceptionListActivity {
         switch (item.getItemId()) {
         case R.id.context_open:
             // Launch activity to view/edit the currently selected item
-            startActivity(new Intent(Intent.ACTION_EDIT, noteUri));
+            StartActivity(new Intent(Intent.ACTION_EDIT, noteUri));
             return true;
 
         case R.id.context_copy:
@@ -464,7 +463,7 @@ public class NotesList extends ExceptionListActivity {
 
             // Sends out an Intent to start an Activity that can handle ACTION_EDIT. The
             // Intent's data is the note ID URI. The effect is to call NoteEdit.
-            startActivity(new Intent(Intent.ACTION_EDIT, uri));
+            StartActivity(new Intent(Intent.ACTION_EDIT, uri));
         }
     }
     

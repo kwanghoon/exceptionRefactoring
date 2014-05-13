@@ -32,7 +32,6 @@ public class ExceptionListActivity extends ListActivity { // Issue: Many duplica
 	public final static int RESULT_EXCEPTION = 99999;
 	
 	private Intent theIntent;
-	private Catch catcher;
 	
 	public class UncaughtException extends RuntimeException {
 		/**
@@ -53,91 +52,37 @@ public class ExceptionListActivity extends ListActivity { // Issue: Many duplica
 	}
 	
 	///
-	final public void StartActivityForResult(Intent intent, int requestCode) {
+	final public void startActivityForResult(Intent intent, int requestCode) {
 		intent.putExtra(exception, (Serializable)null);
-		this.catcher = null;
 				
 		super.startActivityForResult(intent, requestCode);
 	}
 	
-	final public void StartActivity(Intent intent) {
+	final public void startActivity(Intent intent) {
 		intent.putExtra(exception, (Serializable)null);
-		this.catcher = null;
-		
-		super.startActivityForResult(intent, 0); // 0 is a dummy request code.
-	}
-	
-	final public void Try_StartActivityForResult(Intent intent, int requestCode, Catch catcher) {
-		intent.putExtra(exception, (Serializable)null);
-		this.catcher = catcher;
 				
-		super.startActivityForResult(intent, requestCode);
-	}
-	
-	final public void Try_StartActivity(Intent intent, Catch catcher) {
-		intent.putExtra(exception, (Serializable)null);
-		this.catcher = catcher;
-		
 		super.startActivityForResult(intent, 0); // 0 is a dummy request code.
 	}
 	
 	///
 	protected void Catch(Throwable t, int requestCode) throws Throwable {
-		throw t;
 	}
 
-//	private void sendToTheCallerActivity(Throwable exn)  {
-//		// 시작 액티비티가 아니면 (호출 액티비티가 있다면) 예외를 전파
-//		if ( theIntent.hasExtra(exception) ) {
-//			Throw( exn );
-//		}
-//		// 시작 액티비티이면 더 이상 예외를 전파시킬 대상이 없으므로 예외 발생 후 비정상 종료
-//		else { // activityStackSize <= 0 
-//			UncaughtException uncaught_exn = new UncaughtException(exn);
-//			StackTraceElement[] stearr = exn.getStackTrace();
-//			for (int i=0; i<stearr.length; i++) {
-//				Log.e("ExceptionActivity", stearr[i].toString());
-//			}
-//			throw uncaught_exn;
-//		}
-//	}
-	
-	/// Activity Return
-	@Override
-	final protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	if (resultCode == RESULT_EXCEPTION) {
-    		Throwable exn = (Throwable)data.getSerializableExtra(exception);
-    		try {
-    			this.Catch(exn, requestCode);
-    		} catch(Throwable unhandled_exn) {
-//    			this.sendToTheCallerActivity(unhandled_exn);
-    			
-    			// 시작 액티비티가 아니면 (호출 액티비티가 있다면) 예외를 전파
-    			if ( theIntent.hasExtra(exception) ) {
-    				Throw( unhandled_exn );
-    			}
-    			// 시작 액티비티이면 더 이상 예외를 전파시킬 대상이 없으므로 예외 발생 후 비정상 종료
-    			else { // activityStackSize <= 0 
-    				UncaughtException uncaught_exn = new UncaughtException(unhandled_exn);
-    				StackTraceElement[] stearr = unhandled_exn.getStackTrace();
-    				for (int i=0; i<stearr.length; i++) {
-    					Log.e("ExceptionActivity", stearr[i].toString());
-    				}
-    				throw uncaught_exn;
-    			}
-    		}
-    	}
-    	else { // (resultCode == RESULT_OK) 
-    		try {
-    			this.OnActivityResult(requestCode, resultCode, data);
-    		} catch(Throwable exn) {    
-    			Throw ( exn );
-    		}    		
-    	}
+	private void sendToTheCallerActivity(Throwable exn)  {
+		// 시작 액티비티가 아니면 (호출 액티비티가 있다면) 예외를 전파
+		if ( theIntent.hasExtra(exception) ) {
+			Throw( exn );
+		}
+		// 시작 액티비티이면 더 이상 예외를 전파시킬 대상이 없으므로 예외 발생 후 비정상 종료
+		else { // activityStackSize <= 0 
+			UncaughtException uncaught_exn = new UncaughtException(exn);
+			StackTraceElement[] stearr = exn.getStackTrace();
+			for (int i=0; i<stearr.length; i++) {
+				Log.e("ExceptionActivity", stearr[i].toString());
+			}
+			throw uncaught_exn;
+		}
 	}
-	
-	protected void OnActivityResult(int requestCode, int resultCode, Intent data) throws Throwable {
-	}	
 	
 	/// Lifecycle of Activity
 	@Override
@@ -236,6 +181,29 @@ public class ExceptionListActivity extends ListActivity { // Issue: Many duplica
 	}
 	
 	protected void OnSaveInstanceState(Bundle outState) {
+	}
+	
+	/// Activity Return
+	@Override
+	final protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if (resultCode == RESULT_EXCEPTION) {
+    		Throwable exn = (Throwable)data.getSerializableExtra(exception);
+    		try {
+    			this.Catch(exn, requestCode);
+    		} catch(Throwable unhandled_exn) {
+    			this.sendToTheCallerActivity(unhandled_exn);
+    		}
+    	}
+    	else { // (resultCode == RESULT_OK) 
+    		try {
+    			this.OnActivityResult(requestCode, resultCode, data);
+    		} catch(Throwable exn) {    
+    			Throw ( exn );
+    		}    		
+    	}
+	}
+	
+	protected void OnActivityResult(int requestCode, int resultCode, Intent data) throws Throwable {
 	}
 	
 	/// Menu

@@ -30,17 +30,13 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ExceptionView;
 import android.view.Window;
-import android.view.View.OnClickListener;
 import android.view.ExceptionView.ExceptionOnClickListener;
 import android.widget.AdapterView;
-import android.widget.ExceptionAdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ExceptionOnItemClickListener;
 
 /**

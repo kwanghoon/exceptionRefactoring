@@ -2,6 +2,7 @@ package com.example.activitytest;
 
 import android.app.AlertDialog;
 import android.app.ExceptionActivity;
+import android.app.Catch;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -44,30 +45,56 @@ public class ActivityTest extends ExceptionActivity
     	// do nothing
     }
     
-    public void OnClick(View v) throws Throwable {
-    	TextView tv = (TextView)findViewById(R.id.editText1);
-    	String s = tv.getText().toString();
-    	int operand1 = Integer.parseInt(s);
-    	
-    	tv = (TextView)findViewById(R.id.editText2);
-    	s = tv.getText().toString();
-    	int operand2 = Integer.parseInt(s);
-    		
-    	Intent i = new Intent();
-    		
-    	ComponentName comp =
-			new ComponentName("com.example.activitytest",
-					"com.example.activitytest.NextActivity");
-    	i.setComponent(comp);
-    		
-    	Bundle b = new Bundle();
-    	b.putString("operator", operators[opIndex]);
-    	b.putInt("left operand", operand1);
-    	b.putInt("right operand", operand2);
-    		
-    	i.putExtras(b);
-    		
-    	startActivityForResult(i, REQUEST_CODE_PARAM);
+    public void onClick(View v) {
+    	try {
+	    	TextView tv = (TextView)findViewById(R.id.editText1);
+	    	String s = tv.getText().toString();
+	    	int operand1 = Integer.parseInt(s);
+	    	
+	    	tv = (TextView)findViewById(R.id.editText2);
+	    	s = tv.getText().toString();
+	    	int operand2 = Integer.parseInt(s);
+	    		
+	    	Intent i = new Intent();
+	    		
+	    	ComponentName comp =
+				new ComponentName("com.example.activitytest",
+						"com.example.activitytest.NextActivity");
+	    	i.setComponent(comp);
+	    		
+	    	Bundle b = new Bundle();
+	    	b.putString("operator", operators[opIndex]);
+	    	b.putInt("left operand", operand1);
+	    	b.putInt("right operand", operand2);
+	    		
+	    	i.putExtras(b);
+	    	
+	    	Try_StartActivityForResult(i, REQUEST_CODE_PARAM, new Catch() {
+	
+				@Override
+				public boolean handle(Throwable exn) throws Throwable {
+		    		if (exn instanceof IndexOutOfBoundsException) {
+		    			// 사용자가 지정한 예외 처리 코드: 로그 메시지 출력과 다이얼로그를 띄움
+		    			Log.i("ActivityTest", "IndexOutOfBoundsException is raised...");
+					
+		    			AlertDialog.Builder builder = new AlertDialog.Builder(ActivityTest.this);
+		    			builder.setMessage("IndexOutOfBoundsException is raised...")
+		    				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+		    						public void onClick(DialogInterface dialog, int id) {
+		    						}
+	    					});
+	    				builder.create().show();
+	    				return true;
+		    		} 
+		    		
+					return false;
+				}
+	    		
+	    	});
+    	}
+    	catch(Throwable exn) {
+    		Throw (exn);
+    	}
     }
     
     @Override
@@ -86,12 +113,12 @@ public class ActivityTest extends ExceptionActivity
     protected void Catch(Throwable exn, int requestCode) throws Throwable {
 
     	if (requestCode == REQUEST_CODE_PARAM) {
-    		if (exn instanceof IndexOutOfBoundsException) {
+    		if (exn instanceof NullPointerException) {
     			// 사용자가 지정한 예외 처리 코드: 로그 메시지 출력과 다이얼로그를 띄움
-    			Log.i("ActivityTest", "IndexOutOfBoundsException is raised...");
+    			Log.i("ActivityTest", "NullPointerException is raised...");
 			
     			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    			builder.setMessage("IndexOutOfBoundsException is raised...")
+    			builder.setMessage("NullPointerException is raised...")
     				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
     						public void onClick(DialogInterface dialog, int id) {
     						}

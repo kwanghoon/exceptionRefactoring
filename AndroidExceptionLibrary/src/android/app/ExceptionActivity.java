@@ -2,7 +2,7 @@ package android.app;
 
 import java.io.Serializable;
 
-import android.app.ExceptionListActivity.UncaughtException;
+//import android.app.ExceptionListActivity.UncaughtException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +17,7 @@ public class ExceptionActivity extends Activity {
 	public final static int RESULT_EXCEPTION = 99999;
 	
 	private Intent theIntent;
+	private Catch catcher;
 	
 	public class UncaughtException extends RuntimeException {
 		/**
@@ -37,15 +38,31 @@ public class ExceptionActivity extends Activity {
 	}
 	
 	///
-	final public void startActivityForResult(Intent intent, int requestCode) {
+	final public void StartActivityForResult(Intent intent, int requestCode) {
 		intent.putExtra(exception, (Serializable)null);
+		this.catcher = null;
 				
 		super.startActivityForResult(intent, requestCode);
 	}
 	
-	final public void startActivity(Intent intent) {
+	final public void StartActivity(Intent intent) {
 		intent.putExtra(exception, (Serializable)null);
+		this.catcher = null;
+		
+		super.startActivityForResult(intent, 0); // 0 is a dummy request code.
+	}
+	
+	final public void Try_StartActivityForResult(Intent intent, int requestCode, Catch catcher) {
+		intent.putExtra(exception, (Serializable)null);
+		this.catcher = catcher;
 				
+		super.startActivityForResult(intent, requestCode);
+	}
+	
+	final public void Try_StartActivity(Intent intent, Catch catcher) {
+		intent.putExtra(exception, (Serializable)null);
+		this.catcher = catcher;
+		
 		super.startActivityForResult(intent, 0); // 0 is a dummy request code.
 	}
 	
@@ -76,7 +93,18 @@ public class ExceptionActivity extends Activity {
     	if (resultCode == RESULT_EXCEPTION) {
     		Throwable exn = (Throwable)data.getSerializableExtra(exception);
     		try {
-    			this.Catch(exn, requestCode);
+    			// catcher가 등록되어 있으면 handler를 그 다음에 호출
+    			// 등록되어 있지 않으면 Activity.Catch()를 호출
+    			if (catcher != null) {
+    				// catcher.handle()을 호출한 결과 true이면 예외처리가 되었고
+        			// false이면 Activity.Catch()를 호출
+    				if (catcher.handle(exn) == false) this.Catch(exn, requestCode);
+    				else /* 리턴값이 true이면 catcher가 예외를 처리함 */ ;
+    			}
+    			else
+    				this.Catch(exn, requestCode);
+    				
+    			// this.Catch(exn, requestCode);
     		} catch(Throwable unhandled_exn) {
     			//this.sendToTheCallerActivity(unhandled_exn);
     			

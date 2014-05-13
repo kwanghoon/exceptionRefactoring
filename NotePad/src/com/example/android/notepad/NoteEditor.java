@@ -16,7 +16,6 @@
 
 package com.example.android.notepad;
 
-import android.app.Activity;
 import android.app.ExceptionActivity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
