@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,16 +36,13 @@ public class ExceptionListActivity extends ListActivity { // Issue: Many duplica
 	private Catch catcher;
 	
 	public class UncaughtException extends RuntimeException {
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 		public Throwable t;
 		public UncaughtException(Throwable t) { this.t = t; }
 	}
 	
 	/// 
-	final public void Throw(Throwable exn) {  // Issue: Should be public because ExceptionTextView may invoke this method!
+	final public void Throw(Throwable exn) {  // Issue: Should be public because ExceptionTextView may invoke this method!		
 		Intent intent = new Intent();
 		intent.putExtra(exception, exn);
 			
@@ -107,8 +105,29 @@ public class ExceptionListActivity extends ListActivity { // Issue: Many duplica
 	final protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	if (resultCode == RESULT_EXCEPTION) {
     		Throwable exn = (Throwable)data.getSerializableExtra(exception);
+    		
+    		// Add this object to the stack trace of the exception thrown
+    		StackTraceElement elem = new StackTraceElement(this.getClass().toString(), "*unknown*", "*unknown*", 0);
+    		StackTraceElement[] trace = exn.getStackTrace();
+    		StackTraceElement[] newTrace = new StackTraceElement[trace.length+1];
+    		
+    		int i;
+    		for(i=0; i<trace.length; i++)
+    			newTrace[i] = trace[i];
+    		newTrace[i] = elem;
+    		
+    		exn.setStackTrace(newTrace);
+    		
+    		// Catch
     		try {
-    			this.Catch(exn, requestCode);
+    			// catcher가 등록되어 있지 않으면 Activity.Catch()를 호출
+    			if (catcher == null) this.Catch(exn, requestCode);
+    			else {
+    				// 등록된 catcher.handler()에서 예외 처리를 못하면 Activity.Catch()를 호출
+    				if ( ! catcher.handle(exn) ) this.Catch(exn, requestCode);
+    			}
+    			
+//    			this.Catch(exn, requestCode);
     		} catch(Throwable unhandled_exn) {
 //    			this.sendToTheCallerActivity(unhandled_exn);
     			
@@ -120,7 +139,7 @@ public class ExceptionListActivity extends ListActivity { // Issue: Many duplica
     			else { // activityStackSize <= 0 
     				UncaughtException uncaught_exn = new UncaughtException(unhandled_exn);
     				StackTraceElement[] stearr = unhandled_exn.getStackTrace();
-    				for (int i=0; i<stearr.length; i++) {
+    				for (i=0; i<stearr.length; i++) {
     					Log.e("ExceptionActivity", stearr[i].toString());
     				}
     				throw uncaught_exn;
@@ -306,5 +325,19 @@ public class ExceptionListActivity extends ListActivity { // Issue: Many duplica
 	 public boolean OnContextItemSelected(MenuItem item)  throws Throwable  {
 		 return super.onContextItemSelected(item);
 	 }
-
+	 
+	///
+	 @Override
+	 public boolean onKeyDown(int keyCode, KeyEvent event){
+		 try {
+			 return this.OnKeyDown(keyCode, event);
+		 } catch(Throwable exn) {
+			 Throw(exn);
+		 }
+		 return super.onKeyDown(keyCode, event);
+	 }
+	 
+	 public boolean OnKeyDown(int keyCode, KeyEvent event) throws Throwable {
+		 return super.onKeyDown(keyCode, event);
+	 }
 }

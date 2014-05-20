@@ -74,11 +74,17 @@ public class ActivityTest extends ExceptionActivity
 				@Override
 				public boolean handle(Throwable exn) throws Throwable {
 		    		if (exn instanceof IndexOutOfBoundsException) {
+		    			StringBuilder sb = new StringBuilder();
+		    			StackTraceElement[] trace = exn.getStackTrace();
+		    			for(int i=0; i<trace.length; i++)
+		    				sb.append(trace[i] + "\n");
+		    			
 		    			// 사용자가 지정한 예외 처리 코드: 로그 메시지 출력과 다이얼로그를 띄움
 		    			Log.i("ActivityTest", "IndexOutOfBoundsException is raised...");
 					
 		    			AlertDialog.Builder builder = new AlertDialog.Builder(ActivityTest.this);
-		    			builder.setMessage("IndexOutOfBoundsException is raised...")
+		    			builder.setMessage("IndexOutOfBoundsException is raised..." 
+		    									+ "\n" + sb.toString())
 		    				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 		    						public void onClick(DialogInterface dialog, int id) {
 		    						}
@@ -114,11 +120,17 @@ public class ActivityTest extends ExceptionActivity
 
     	if (requestCode == REQUEST_CODE_PARAM) {
     		if (exn instanceof NullPointerException) {
+    			StringBuilder sb = new StringBuilder();
+    			StackTraceElement[] trace = exn.getStackTrace();
+    			for(int i=0; i<trace.length; i++)
+    				sb.append(trace[i] + "\n");
+    			
     			// 사용자가 지정한 예외 처리 코드: 로그 메시지 출력과 다이얼로그를 띄움
     			Log.i("ActivityTest", "NullPointerException is raised...");
 			
     			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    			builder.setMessage("NullPointerException is raised...")
+    			builder.setMessage("NullPointerException is raised..."
+    									+ "\n" + sb.toString())
     				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
     						public void onClick(DialogInterface dialog, int id) {
     						}

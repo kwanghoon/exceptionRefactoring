@@ -37,8 +37,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -118,7 +116,7 @@ public class BluetoothChat extends ExceptionActivity {
         // setupChat() will then be called during onActivityResult
         if (!mBluetoothAdapter.isEnabled()) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+            StartActivityForResult(enableIntent, REQUEST_ENABLE_BT);
         // Otherwise, setup the chat session
         } else {
             if (mChatService == null) setupChat();
@@ -198,7 +196,7 @@ public class BluetoothChat extends ExceptionActivity {
             BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
-            startActivity(discoverableIntent);
+            StartActivity(discoverableIntent);
         }
     }
 
@@ -349,12 +347,12 @@ public class BluetoothChat extends ExceptionActivity {
         case R.id.secure_connect_scan:
             // Launch the DeviceListActivity to see devices and do scan
             serverIntent = new Intent(this, DeviceListActivity.class);
-            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
+            StartActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
             return true;
         case R.id.insecure_connect_scan:
             // Launch the DeviceListActivity to see devices and do scan
             serverIntent = new Intent(this, DeviceListActivity.class);
-            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_INSECURE);
+            StartActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_INSECURE);
             return true;
         case R.id.discoverable:
             // Ensure this device is discoverable by others

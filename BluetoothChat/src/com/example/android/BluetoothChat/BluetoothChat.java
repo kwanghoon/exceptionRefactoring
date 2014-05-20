@@ -364,10 +364,15 @@ public class BluetoothChat extends ExceptionActivity {
     
     @Override
 	protected void Catch(Throwable exn, int requestCode) throws Throwable {
+		StringBuilder sb = new StringBuilder();
+		StackTraceElement[] trace = exn.getStackTrace();
+		for(int i=0; i<trace.length; i++)
+			sb.append(trace[i] + "\n");
+		
 		// 사용자가 지정한 예외 처리 코드: 다이얼로그를 띄움	
     	Log.i("BluetoothChat", exn.toString() + " is raised...");
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(exn.toString() + " is raised...")
+		builder.setMessage(exn.toString() + " is raised..."+ "\n" + sb.toString())
 			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 					}
